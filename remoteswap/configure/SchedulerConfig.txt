@@ -1,6 +1,6 @@
 SchedulerInfo #Max number of scheduler: 4(fixed)
 SchedulerCores #
-20 40 78 79
+16 17 18 19
 SchedulerThreshold #(MB/s or us) (Recommend higher)
 -10000
 SchedulerAutoMaintainTime #(s) (Recommend 100)

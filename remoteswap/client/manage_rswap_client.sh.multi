@@ -11,8 +11,8 @@ fi
 
 
 
-mem_server_ip="172.16.32.1"
-mem_server_port="9400"
+mem_server_ip="10.10.1.1"
+mem_server_port="50000"
 
 if [ -z "${HOME}" ]
 then
@@ -23,15 +23,15 @@ else
 fi
 
 swap_files=(
-    "${home_dir}/shared_swapfile"
-    "${home_dir}/memcached_swapfile"
-    "${home_dir}/sparkTC_swapfile"
-    "${home_dir}/sparkLR_swapfile"
-    "${home_dir}/sparkKM_swapfile"
+    "/mydata/shared_swapfile"
+    "/mydata/memcached_swapfile"
+    "/mydata/sparkTC_swapfile"
+    #"/mydata/sparkLR_swapfile"
+    #"/mydata/sparkKM_swapfile"
     )
 
-SWAP_PARTITION_SIZE_GBs=("14" "10" "32" "32" "32")
-SWAP_PARTITION_SIZE_GB="120"
+SWAP_PARTITION_SIZE_GBs=("4" "4" "32")
+SWAP_PARTITION_SIZE_GB="40"
 
 echo " !! Warning, check the parameters below : "
 echo " Assigned memory server IP ${mem_server_ip} Port ${mem_server_port}"
