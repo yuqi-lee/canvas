@@ -81,7 +81,7 @@ static struct frontswap_ops rswap_frontswap_ops = {
 	.load = rswap_frontswap_load,
 	.load_async = rswap_frontswap_load_async,
 	.poll_load = rswap_frontswap_poll_load,
-	.check_load = rswap_frontswap_check_load,
+	//.check_load = rswap_frontswap_check_load,
 	.invalidate_page = rswap_invalidate_page,
 	.invalidate_area = rswap_invalidate_area,
 };

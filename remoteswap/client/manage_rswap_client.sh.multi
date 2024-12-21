@@ -30,8 +30,8 @@ swap_files=(
     #"/mydata/sparkKM_swapfile"
     )
 
-SWAP_PARTITION_SIZE_GBs=("4" "4" "32")
-SWAP_PARTITION_SIZE_GB="40"
+SWAP_PARTITION_SIZE_GBs=("1" "8" "32")
+SWAP_PARTITION_SIZE_GB="41"
 
 echo " !! Warning, check the parameters below : "
 echo " Assigned memory server IP ${mem_server_ip} Port ${mem_server_port}"
