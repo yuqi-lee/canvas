@@ -4,6 +4,9 @@
 #include <linux/vmalloc.h>
 #include <linux/highmem.h>
 #include <linux/pagemap.h>
+#include <linux/timer.h>
+
+#define canvas_info_print_interval 2000
 
 int rswap_init_local_dram(int _mem_size);
 int rswap_remove_local_dram(void);

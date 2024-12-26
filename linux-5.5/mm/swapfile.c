@@ -1537,8 +1537,10 @@ void put_swap_page(struct page *page, swp_entry_t entry)
 		if (!__swap_entry_free_locked(si, offset + i, SWAP_HAS_CACHE)) {
 			unlock_cluster_or_swap_info(si, ci);
 			/* [Canvas] only reserve entry for non-THP pages. */
-			if (size == 1 && reserve_swp_entry_enabled())
+			if (size == 1 && reserve_swp_entry_enabled()) {
 				set_reserved_swp_entry(page, entry);
+				//atomic64_inc(&num_reserved_entries);
+			}
 			else
 				free_swap_slot(entry);
 			if (i == size - 1)
@@ -4040,6 +4042,7 @@ static unsigned char __swap_entry_reserve(struct page *page,
 		 * only reserve entry once when it is not reserved
 		 */
 		set_reserved_swp_entry(page, entry);
+		//atomic64_inc(&num_reserved_entries);
 	}
 
 	return usage;
@@ -4058,6 +4061,7 @@ void free_reserved_swp_entry(struct page *page)
 {
 	swp_entry_t entry = get_reserved_swp_entry(page);
 	if (is_valid_swp_entry(entry)) {
+		//atomic64_dec(&num_reserved_entries);
 		set_reserved_swp_entry(page, invalid_swp_entry());
 		free_swap_slot_try_lock(entry);
 	}

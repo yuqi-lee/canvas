@@ -12,6 +12,8 @@
 /* swap isolation */
 extern bool __swap_isolated;
 
+extern atomic64_t num_reserved_entries;
+
 static inline bool swap_isolated(void)
 {
 	return __swap_isolated;
@@ -36,7 +38,8 @@ extern swp_entry_t *__canvas_page_entries;
 
 static inline bool reserve_swp_entry_enabled(void)
 {
-	return slotcache_cpumask[smp_processor_id()];
+	//return slotcache_cpumask[smp_processor_id()];
+	return true;
 }
 
 static inline bool is_valid_swp_entry(swp_entry_t entry)
@@ -65,6 +68,8 @@ static inline swp_entry_t alloc_reserved_swp_entry(struct page *page)
 		return invalid_swp_entry();
 	entry = __canvas_page_entries[page_to_pfn(page)];
 	__canvas_page_entries[page_to_pfn(page)] = invalid_swp_entry();
+	if(is_valid_swp_entry(entry))
+		atomic64_dec(&num_reserved_entries);
 	return entry;
 }
 
@@ -75,6 +80,12 @@ static inline void set_reserved_swp_entry(struct page *page, swp_entry_t entry)
 		return;
 	old_entry = __canvas_page_entries[page_to_pfn(page)];
 	__canvas_page_entries[page_to_pfn(page)] = entry;
+
+	if(is_valid_swp_entry(old_entry)) {
+		atomic64_dec(&num_reserved_entries);
+	} else {
+		atomic64_inc(&num_reserved_entries);
+	}
 
 	if (is_valid_swp_entry(old_entry) && is_valid_swp_entry(entry)) {
 		pr_err("%s:%d rewrite reserved entry! page %p, old %lx, new %lx\n",

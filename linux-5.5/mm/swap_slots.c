@@ -426,7 +426,7 @@ swp_entry_t get_swap_page(struct page *page)
 	 */
 	cache = raw_cpu_ptr(&swp_slots);
 
-	if (likely(check_cache_active() && cache->slots)) {
+	if (false) {
 		mutex_lock(&cache->alloc_lock);
 		if (cache->slots) {
 repeat:

@@ -1,5 +1,8 @@
+#include <linux/swap_stats.h>
 #include "rswap_dram.h"
 #include "constants.h"
+
+struct timer_list canvas_info_printer;
 
 static void *local_dram; // a buffer created via vzalloc
 static uint64_t local_mem_size; // local DRAM size in GB
@@ -31,11 +34,21 @@ int rswap_dram_read(struct page *page, size_t roffset)
 	return 0;
 }
 
+void canvas_info_print_callback(struct timer_list *timer) {
+	uint64_t num_reserved_entries_tmp = atomic64_read(&num_reserved_entries);
+	pr_info("Num of current reserved entries is: %lld\n", num_reserved_entries_tmp);
+  	mod_timer(timer, jiffies + msecs_to_jiffies(canvas_info_print_interval)); 
+}
+
 int rswap_init_local_dram(int _mem_size)
 {
 	local_mem_size = (uint64_t)_mem_size * ONE_GB;
 	local_dram = vzalloc(local_mem_size);
 	pr_info("Allocate local dram 0x%llx bytes for debug\n", local_mem_size);
+	
+	timer_setup(&canvas_info_printer, canvas_info_print_callback, 0);
+  	mod_timer(&canvas_info_printer, jiffies + msecs_to_jiffies(canvas_info_print_interval));
+
 	return 0;
 }
 

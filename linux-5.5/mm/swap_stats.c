@@ -9,6 +9,9 @@
 bool __swap_isolated = true;
 EXPORT_SYMBOL(__swap_isolated);
 
+atomic64_t num_reserved_entries = ATOMIC64_INIT(0);
+EXPORT_SYMBOL(num_reserved_entries);
+
 /* swap cache & prefetching */
 bool __bypass_swap_cache = true;
 int __readahead_win = 0;
