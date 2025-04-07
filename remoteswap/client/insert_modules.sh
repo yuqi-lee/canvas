@@ -1,0 +1,1 @@
+sudo insmod ./rswap-client.ko sip=10.10.1.1 sport=50000 rmsize=64

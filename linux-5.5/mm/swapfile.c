@@ -1082,32 +1082,13 @@ static void set_swapfile_affinity(struct swap_info_struct *p)
 	// #4, Node-1, spark
 	// the rest of cores use the default shared partition
 	if (p->isolated_id == 0) {
-		int num_memcached_cores = 2;
-		int memcached_cores[4] = {8, 9};
+		int num_memcached_cores = 64;
 		for (i = 0; i < num_memcached_cores; i++) {
-			cpu_to_swap_partition[memcached_cores[i]] = p;
-		}
-	} else if (p->isolated_id == 1) {
-		int num_sparkTC_cores = 8;
-		int sparkTC_cores[8] = {0, 1, 2, 3, 4, 5, 6, 7};
-		for (i = 0; i < num_sparkTC_cores; i++) {
-			cpu_to_swap_partition[sparkTC_cores[i]] = p;
-		}
-	} else if (p->isolated_id == 2) {
-		int num_sparkLR_cores = 16;
-		int sparkLR_cores[16] = { 21, 22, 23, 24, 25, 26, 27, 28,
-					  29, 30, 31, 32, 33, 34, 35, 36 };
-		for (i = 0; i < num_sparkLR_cores; i++) {
-			cpu_to_swap_partition[sparkLR_cores[i]] = p;
-		}
-	} else if (p->isolated_id == 3) {
-		int num_sparkKM_cores = 16;
-		int sparkKM_cores[16] = { 61, 62, 63, 64, 65, 66, 67, 68,
-					  69, 70, 71, 72, 73, 74, 75, 76 };
-		for (i = 0; i < num_sparkKM_cores; i++) {
-			cpu_to_swap_partition[sparkKM_cores[i]] = p;
+			cpu_to_swap_partition[i] = p;
 		}
 	}
+
+	pr_info("canvas swap partition is %d", p->type);
 }
 
 /**
