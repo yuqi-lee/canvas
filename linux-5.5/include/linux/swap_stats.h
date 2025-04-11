@@ -38,8 +38,7 @@ extern swp_entry_t *__canvas_page_entries;
 
 static inline bool reserve_swp_entry_enabled(void)
 {
-	//return slotcache_cpumask[smp_processor_id()];
-	return true;
+	return smp_processor_id() % 2 == 0;
 }
 
 static inline bool is_valid_swp_entry(swp_entry_t entry)

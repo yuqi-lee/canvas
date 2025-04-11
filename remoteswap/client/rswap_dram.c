@@ -22,7 +22,7 @@ int rswap_dram_write(struct page *page, size_t roffset)
 	page_vaddr = kmap_atomic(page);
 	copy_page((void *)(local_dram + roffset), page_vaddr);
 	kunmap_atomic(page_vaddr);
-	//udelay(5);
+	udelay(2);
 	atomic64_inc(&num_swapout_pages);
 
 	return 0;
@@ -39,7 +39,7 @@ int rswap_dram_read(struct page *page, size_t roffset)
 	page_vaddr = kmap_atomic(page);
 	copy_page(page_vaddr, (void *)(local_dram + roffset));
 	kunmap_atomic(page_vaddr);
-	//udelay(5);
+	udelay(2);
 	atomic64_inc(&num_swapin_pages);
 
 	SetPageUptodate(page);
