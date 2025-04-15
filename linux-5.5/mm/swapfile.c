@@ -1117,8 +1117,11 @@ static void set_swapfile_affinity(struct swap_info_struct *p)
 	// #4, Node-1, spark
 	// the rest of cores use the default shared partition
 	if (p->isolated_id == 0) {
-		int num_memcached_cores = 64;
-		for (i = 0; i < num_memcached_cores; i++) {
+		for (i = 0; i < 64; i++) {
+			cpu_to_swap_partition[i] = p;
+		}
+	} else if(p->isolated_id == 1) {
+		for (i = 64; i < 128; i++) {
 			cpu_to_swap_partition[i] = p;
 		}
 	}

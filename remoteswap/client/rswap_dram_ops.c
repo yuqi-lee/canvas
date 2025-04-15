@@ -5,12 +5,15 @@
 #include "rswap_scheduler.h"
 #include <linux/swap_stats.h>
 
+size_t base_addr = (32UL * 1024 * 1024 * 1024);
+
 int rswap_frontswap_store(unsigned type, pgoff_t swap_entry_offset,
 			  struct page *page)
 {
 	int ret = 0;
 
-	ret = rswap_dram_write(page, swap_entry_offset << PAGE_SHIFT);
+	size_t addr = (swap_entry_offset << PAGE_SHIFT) + type * base_addr;
+	ret = rswap_dram_write(page, addr);
 	if (unlikely(ret)) {
 		pr_err("could not read page remotely\n");
 		goto out;
@@ -24,7 +27,8 @@ int rswap_frontswap_load(unsigned type, pgoff_t swap_entry_offset,
 {
 	int ret = 0;
 
-	ret = rswap_dram_read(page, swap_entry_offset << PAGE_SHIFT);
+	size_t addr = (swap_entry_offset << PAGE_SHIFT) + type * base_addr;
+	ret = rswap_dram_read(page, addr);
 	if (unlikely(ret)) {
 		pr_err("could not read page remotely\n");
 		goto out;
@@ -39,7 +43,8 @@ int rswap_frontswap_load_async(unsigned type, pgoff_t swap_entry_offset,
 {
 	int ret = 0;
 
-	ret = rswap_dram_read(page, swap_entry_offset << PAGE_SHIFT);
+	size_t addr = (swap_entry_offset << PAGE_SHIFT) + type * base_addr;
+	ret = rswap_dram_read(page, addr);
 	if (unlikely(ret)) {
 		pr_err("could not read page remotely\n");
 		goto out;
